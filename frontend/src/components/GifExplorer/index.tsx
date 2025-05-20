@@ -8,13 +8,11 @@ import styles from './GifExplorer.module.css';
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export default function GifExplorer() {
-  const [gifs, setGifs] = useState<Gif[]>([]);
+  const [gifs, setGifs]       = useState<Gif[]>([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [query, setQuery] = useState('');
-  const [page, setPage] = useState(1);
-  const [totalCount, setTotalCount] = useState(0);
-
+  const [error, setError]     = useState<string | null>(null);
+  const [query, setQuery]     = useState('');
+  const [page, setPage]       = useState(1);
   const limit = 25;
 
   const buildUrl = (q: string, p: number) => {
@@ -34,7 +32,6 @@ export default function GifExplorer() {
 
       const data = await res.json();
       setGifs(data.gifs);
-      setTotalCount(data.totalCount ?? data.gifs.length);
     } catch (err: any) {
       console.error(err);
       setError(err.message || 'Failed to load GIFs');
@@ -101,7 +98,7 @@ export default function GifExplorer() {
           <Pagination
             page={page}
             limit={limit}
-            count={totalCount}
+            count={gifs.length}
             onPageChange={newPage => goTo(query, newPage)}
           />
         </>
